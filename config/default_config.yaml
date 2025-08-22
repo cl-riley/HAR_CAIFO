@@ -1,0 +1,41 @@
+data:
+  data_dir: "data/"
+  train_data: "train.csv"
+  test_data: "test.csv"
+  window_size: 64  # Reduced from 128 to simplify
+  window_step: 32  # Reduced to prevent too much overlap
+  validation_split: 0.3  # Increased validation size
+  random_state: 42
+
+feature:
+  time_domain_features: true
+  frequency_domain_features: true
+  statistical_features: true
+  feature_selection_method: "permutation"
+  n_features_to_select: 30  # Match model's expected features
+
+caifo:
+  n_bayesian_iterations: 1
+  bayesian_init_points: 3
+  max_iterations: 3
+  min_improvement_threshold: 0.01
+  feature_boost_factor: 1.5  # Reduced to prevent overfitting
+  class_weight_range: [0.2, 5.0]  # Narrower range to prevent extreme weights
+  patience: 10
+  min_delta: 0.001
+
+model:
+  model_type: "random_forest"  # Using RandomForest for better generalization
+  save_dir: "models/"
+  model_params:
+    n_estimators: 100
+    max_depth: 8  # Limited to prevent overfitting
+    min_samples_split: 5  # Increased to improve generalization
+    min_samples_leaf: 2  # To prevent fitting to noise
+    bootstrap: true
+    oob_score: true
+    random_state: 42
+    # Removed class_weight: "balanced" that was causing conflicts
+
+output_dir: "output/"
+verbose: true
